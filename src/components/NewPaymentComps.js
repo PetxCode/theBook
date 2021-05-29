@@ -2,23 +2,40 @@ import { Button, Input } from 'antd';
 import React, {useState, useEffect} from 'react';
  
   import { usePaystackPayment } from 'react-paystack';
+import { useHistory } from 'react-router';
+import { app } from '../base';
 
   
 
-  const MakePayment = () => {
+  const MakePayment = ({id}) => {
     const [amount, setAmount] = useState("")
+const hist = useHistory()
+    
+  const [view, setView] = useState([])
+
+  const viewDoc = async() => {
+    await app.firestore().collection("books").doc(id).get()
+    .then(show => {
+      setView(show.data())
+    })
+  }
+
+  useEffect(()=>{
+      viewDoc()
+  }, [])
 
 
     const config = {
       reference: (new Date()).getTime(),
       email: "user@example.com",
-      amount: amount,
-      publicKey: 'pk_test_dsdfghuytfd2345678gvxxxxxxxxxx',
+      amount: view.cost*100,
+      publicKey: 'pk_test_d632bf4b9aa1e74745eb158cec8034961dc13b18',
   };
   
 
   const onSuccess = (reference) => {
     // Implementation for whatever you want to do with reference and after success call.
+    hist.push('/')
     console.log(reference);
   };
 
@@ -32,7 +49,8 @@ import React, {useState, useEffect} from 'react';
       return (
         <div>
           <Input
-          placeholder="How much do you wabt to support us with"
+          placeholder={view && view.cost}
+          disabled={true}
           value={amount}
           onChange={(e)=>{
             setAmount(e.target.value)
@@ -50,11 +68,11 @@ import React, {useState, useEffect} from 'react';
       );
   };
   
-  function NewPaymentComps() {
+  function NewPaymentComps({id}) {
     return (
       <div>
-        
-        <MakePayment />
+        <div>ID: {id}</div>
+        <MakePayment id= {id} />
       </div>
     );
   }

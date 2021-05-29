@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react'
 import moment from "moment"
 import { app } from '../base'
 import NewPaymentComps from './NewPaymentComps'
+import AddBooks from './AddBooks'
+import { Link } from 'react-router-dom'
 
 
 const HomeScreen = () => {
@@ -33,7 +35,7 @@ const HomeScreen = () => {
 
   return (
     <div>
-      
+       <AddBooks />
 <div
           style={{
             marginTop:"40px",
@@ -48,14 +50,17 @@ const HomeScreen = () => {
                 style={{
                   width:"300px",
                   height:"400px",
-                  borderRadius: "5px",
+                  borderRadius: "10px",
                   backgroundColor:"lightblue",
                   margin:"10px",
                   marginBottom:"40px"
                 }}
                 >  
                 <div> 
-                  <img 
+                 <Link 
+                 to={`/product/${id}`}
+                 >
+                 <img 
                     src={bookCover}
                     style={{
                       width:"100%",
@@ -64,6 +69,7 @@ const HomeScreen = () => {
                       borderRadius:"10px 10px 0 0"
                     }}
                   />
+                 </Link>
                    </div>
                    
                 <div
@@ -85,7 +91,11 @@ const HomeScreen = () => {
                 >Uploaded  {
                   createdAt === null ? createdAt : moment(createdAt.toDate()).fromNow()
                 } </div>
-                <Button
+
+              <Link
+              to={`/product/${id}`}
+              >
+              <Button
                 type='primary'
                 danger
                 style={{
@@ -96,10 +106,12 @@ const HomeScreen = () => {
                     }}
 
                 >
-                <a href={book} download="My_File.pdf" target={"_blank"} rel = "noopener noreferrer"> Download Here </a>
+                 Download Here
                 </Button>
+              </Link>
+   
                <div>
-              <Button
+              {/* <Button
               style={{
                 width:"100%"
               }}
@@ -111,7 +123,7 @@ const HomeScreen = () => {
 
 {
   toggle ? <NewPaymentComps/> : null
-}
+} */}
 
                  
                </div>

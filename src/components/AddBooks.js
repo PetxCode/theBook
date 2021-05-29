@@ -5,6 +5,7 @@ import { Button, Input } from 'antd'
 
 const AddBooks = () => {
   const[name, setName] = useState("")
+  const[cost, setCost] = useState("")
   const [bookCover, setBookCover] = useState(null)
   const [book, setBook] = useState(null)
   const [viewBook, setViewBook] = useState([])
@@ -29,10 +30,15 @@ const AddBooks = () => {
   const uploadBooksTOCloud = async() => {
     await app.firestore().collection("books").doc().set({
       book,
+      cost: parseInt(cost)/100,
       bookCover,
       name,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()     
     })
+    setCost("")
+    setName("")
+    setBook(null)
+    setBookCover(null)
   }
 
   return (
@@ -80,11 +86,20 @@ const AddBooks = () => {
             placeholder="Book title"
             value={name}
             onChange={(e)=>{
-              setName(e.target.value
-                
-                )
+              setName(e.target.value )
             }}
           />
+
+          
+          <Input 
+            placeholder="Book Cost"
+            value={cost}
+            onChange={(e)=>{
+              setCost(e.target.value )
+            }}
+          />
+
+
           <Button
           type= "primary"
           danger
