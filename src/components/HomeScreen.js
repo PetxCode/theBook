@@ -5,9 +5,24 @@ import { app } from '../base'
 import NewPaymentComps from './NewPaymentComps'
 import AddBooks from './AddBooks'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import axios from 'axios'
+import { AddProduct } from './Redux/ProductReducer'
 
 
 const HomeScreen = () => {
+  const dispatch = useDispatch()
+  const choice = useSelector(r => r.add.product)
+  console.log("Choice Data: ",choice)
+
+
+  const getDataNow = async() => {
+    const res = await axios.get("https://fakestoreapi.com/products")
+    console.log(res.data)
+    if(res){
+      dispatch(AddProduct(res.data))
+    }
+  }
 
   const [viewBook, setViewBook] = useState([])
   const [toggle, setToggle] = useState(false)
@@ -31,12 +46,13 @@ const HomeScreen = () => {
 
   useEffect(()=>{
     viewAllBook()
+    getDataNow()
   },[])
 
   return (
     <div>
        <AddBooks />
-<div
+        <div
           style={{
             marginTop:"40px",
             display:"flex",
@@ -108,31 +124,66 @@ const HomeScreen = () => {
                 >
                  Download Here
                 </Button>
-              </Link>
-   
-               <div>
-              {/* <Button
-              style={{
-                width:"100%"
-              }}
-              onClick={()=>{handleToggle(id)}}>
-                {
-                  toggle ? "I have change my mind" : "Click to Suppot us"
-                }
-              </Button>
-
-{
-  toggle ? <NewPaymentComps/> : null
-} */}
-
-                 
+              </Link> 
+               <div>               
                </div>
-             </div>
-             
+             </div>             
               ))
             }
           </div>
-  
+              <div
+              style={{
+                marginTop:"40px",
+                marginBottom:"40px",
+                display:"flex",
+                flexWrap:"wrap",
+                justifyContent:"center"
+              }}
+              >
+               
+                  {
+                    choice.map(({title, id, price, image, description, })=>(
+                      <div key={id} 
+                      style={{
+                        width:"300px",
+                        height:"450px",
+                        backgroundColor:"lightblue",
+                        borderRadius:"5px",
+                        margin:"10px"
+                      }}
+                      > 
+                      <img  
+                      src={image}
+                      style={{
+                        width:"300px",
+                        height:"320px",
+                        objectFit:"cover",
+                      }}
+                      />
+                        <div> {title}</div>
+                        <Link
+                        to={`/store/${id}`}
+                        >
+                        <Button
+                        type="primary"
+                        danger
+                        style={{
+                          marginTop:"10px",
+                          width:"300px",
+                          height:"60px",
+                          alignItems:"center",
+                          justifyContent:"center",
+                          display:"flex",
+                          fontWeight:"bold"
+                        }}
+                        >${price}</Button>
+                        </Link>
+                       </div>
+                    ))
+                  }
+                
+              
+              </div>
     </div>
   )
 }
