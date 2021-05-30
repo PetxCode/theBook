@@ -38,20 +38,22 @@ export const BookDetail = () => {
 
       }}
       >
-        <div> This is the Detail Page for Product selected: {id} </div>
+        <div> This is the Detail Page for Product selected: <br/> {id} </div>
         <div>
 
                   <img 
                     src={view && view.bookCover}
                     style={{
-                      width:"100%",
+                      width:"300px",
                       height:"350px",
                       objectFit:"cover",
                       borderRadius:"10px 10px 0 0",
                       backgroundColor:"lightblue",
                     }}
                   />
+                  <br/>
         </div>
+        <br/>
         <div>book title: {view && view.name}</div>
         <div>book cost is: {view && view.cost}</div>
 
@@ -59,7 +61,7 @@ export const BookDetail = () => {
                 type='primary'
                 danger
                 style={{
-                  width:"100%"
+                  width:"300px"
                  }}
                     onClick={()=>{
                       console.log("download")

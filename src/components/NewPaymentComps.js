@@ -47,13 +47,21 @@ const hist = useHistory()
 
       const initializePayment = usePaystackPayment(config);
       return (
-        <div>
+        <div
+        style={{
+          display:"flex",
+          flexDirection:"column"
+        }}
+        >
           <Input
           placeholder={view && view.cost}
           disabled={true}
           value={amount}
           onChange={(e)=>{
             setAmount(e.target.value)
+          }}
+          style={{
+            width:"300px"
           }}
         />
             <Button 
